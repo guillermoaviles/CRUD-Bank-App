@@ -54,7 +54,7 @@ public class CheckingAccountController implements ICheckingAccountController {
     @PatchMapping("/accounts/checking/transfer/{fromId}/{destinationId}/{amount}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void transfer(@PathVariable Integer fromId, @PathVariable Integer destinationId, @PathVariable AmountDTO amountDTO) {
-
+        checkingAccountService.transfer(fromId, destinationId, amountDTO.getAmount());
     }
 
 

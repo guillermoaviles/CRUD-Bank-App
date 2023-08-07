@@ -8,4 +8,6 @@ public interface ICheckingAccountService {
     void updateCheckingAccount(CheckingAccount checkingAccount, Integer accountNumber);
 
     void deleteCheckingAccount(Integer accountNumber);
+
+    void transfer(Integer fromId, Integer destinationId, Double amount);
 }
