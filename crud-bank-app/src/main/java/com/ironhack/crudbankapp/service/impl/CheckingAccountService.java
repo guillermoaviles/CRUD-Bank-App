@@ -54,9 +54,6 @@ public class CheckingAccountService implements ICheckingAccountService {
             fromCheckingAccount.transferOutSavings(amount, destinationSavingsAccountOptional.get());
             checkingAccountRepository.save(fromCheckingAccount);
         } else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Account #" + destinationId + " not found");
-
-        // transferOut needs to return updated destination account
-
     }
 
     @Override
