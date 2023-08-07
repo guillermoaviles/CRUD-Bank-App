@@ -14,12 +14,13 @@ public class CheckingAccount extends Account {
 
     }
 
-    public void processPayment(double paymentAmount) {
-
+    public void transferIn(double amount) {
+        setBalance(getBalance() + amount);
     }
 
-    public void processDebit(double purchaseAmount) {
-
+    public void transferOut(double amount, CheckingAccount checkingAccount) {
+        setBalance(getBalance() - amount);
+        checkingAccount.transferIn(amount);
     }
 
     @Override
