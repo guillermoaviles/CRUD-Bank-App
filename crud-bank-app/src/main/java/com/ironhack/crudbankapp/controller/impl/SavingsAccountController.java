@@ -30,7 +30,7 @@ public class SavingsAccountController implements ISavingsAccountController {
 
     @GetMapping("/accounts/savings/{accountNumber}")
     public SavingsAccount getSavingsAccountByAccountNumber(@PathVariable Integer accountNumber) {
-        return savingsAccountService.getSavingsAccountById(accountNumber);
+        return savingsAccountService.getSavingsAccountByAccountNumber(accountNumber);
     }
 
     @GetMapping("/accounts/savings/owner/{name}")
