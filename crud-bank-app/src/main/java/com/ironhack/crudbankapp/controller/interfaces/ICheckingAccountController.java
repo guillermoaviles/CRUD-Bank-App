@@ -1,0 +1,16 @@
+package com.ironhack.crudbankapp.controller.interfaces;
+
+import com.ironhack.crudbankapp.model.CheckingAccount;
+import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import java.util.List;
+
+public interface ICheckingAccountController {
+    List<CheckingAccount> getAllCheckingAccounts();
+    CheckingAccount getCheckingAccountByAccountNumber(@PathVariable Integer accountNumber);
+    void saveCheckingAccount(@RequestBody @Valid CheckingAccount checkingAccount);
+    void updateCheckingAccount(@RequestBody @Valid CheckingAccount checkingAccount, @PathVariable Integer accountNumber);
+    void deleteCheckingAccount(@PathVariable Integer accountNumber);
+}
