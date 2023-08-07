@@ -11,14 +11,14 @@ public abstract class Account {
     @GeneratedValue(generator = "mySeqGen")
     private Integer accountNumber;
     private String owner;
-    private double balance;
+    private Double balance;
 
     public Account() {
     }
 
     public Account(String owner) {
         this.owner = owner;
-        this.balance = 0;
+        this.balance = 0.0;
     }
 
     public Integer getAccountNumber() {
@@ -40,8 +40,9 @@ public abstract class Account {
     public double getBalance() {
         return balance;
     }
+    abstract void transferIn(Double amount);
 
-    public void setBalance(double balance) {
+    public void setBalance(Double balance) {
         this.balance = balance;
     }
 

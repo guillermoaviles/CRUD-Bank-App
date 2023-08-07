@@ -1,6 +1,7 @@
 package com.ironhack.crudbankapp.controller.impl;
 
 import com.ironhack.crudbankapp.controller.interfaces.ICheckingAccountController;
+import com.ironhack.crudbankapp.dtos.AmountDTO;
 import com.ironhack.crudbankapp.model.CheckingAccount;
 import com.ironhack.crudbankapp.repository.CheckingAccountRepository;
 import com.ironhack.crudbankapp.service.impl.CheckingAccountService;
@@ -49,6 +50,13 @@ public class CheckingAccountController implements ICheckingAccountController {
     public void updateCheckingAccount(@RequestBody @Valid CheckingAccount checkingAccount, @PathVariable Integer accountNumber) {
         checkingAccountService.updateCheckingAccount(checkingAccount, accountNumber);
     }
+
+    @PatchMapping("/accounts/checking/transfer/{fromId}/{destinationId}/{amount}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void transfer(@PathVariable Integer fromId, @PathVariable Integer destinationId, @PathVariable AmountDTO amountDTO) {
+
+    }
+
 
     //  **************************************************  DELETE  ***************************************************
 

@@ -10,16 +10,19 @@ public class SavingsAccount extends Account{
     public SavingsAccount() {
     }
 
-    public SavingsAccount(String owner, double interestRate) {
+    public SavingsAccount(String owner, Double interestRate) {
         super(owner);
         this.interestRate = interestRate;
     }
 
+    public void transferIn(Double amount) {
+        setBalance(getBalance() + amount);
+    }
     public double getInterestRate() {
         return interestRate;
     }
 
-    public void setInterestRate(double interestRate) {
+    public void setInterestRate(Double interestRate) {
         this.interestRate = interestRate;
     }
 
@@ -29,7 +32,7 @@ public class SavingsAccount extends Account{
     }
 
     @Override
-    public void setBalance(double balance) {
+    public void setBalance(Double balance) {
         super.setBalance(balance);
     }
 

@@ -1,6 +1,8 @@
 package com.ironhack.crudbankapp.model;
 
 import jakarta.persistence.PrimaryKeyJoinColumn;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 @PrimaryKeyJoinColumn(name="id")
 public class CheckingAccount extends Account {
@@ -14,13 +16,13 @@ public class CheckingAccount extends Account {
 
     }
 
-    public void transferIn(double amount) {
+    public void transferIn(Double amount) {
         setBalance(getBalance() + amount);
     }
 
-    public void transferOut(double amount, CheckingAccount checkingAccount) {
+    public void transferOut(Double amount, Account account) {
         setBalance(getBalance() - amount);
-        checkingAccount.transferIn(amount);
+        account.transferIn(amount);
     }
 
     @Override
@@ -28,8 +30,9 @@ public class CheckingAccount extends Account {
         return super.getBalance();
     }
 
+
     @Override
-    public void setBalance(double balance) {
+    public void setBalance(Double balance) {
         super.setBalance(balance);
     }
 
