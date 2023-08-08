@@ -2,20 +2,15 @@ package com.ironhack.crudbankapp.model;
 
 import com.ironhack.crudbankapp.repository.CheckingAccountRepository;
 import com.ironhack.crudbankapp.repository.SavingsAccountRepository;
+import jakarta.persistence.Entity;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
-@PrimaryKeyJoinColumn(name="id")
+@Entity
+@PrimaryKeyJoinColumn(name="accountNumber")
 public class CheckingAccount extends Account {
-
-    @Autowired
-    CheckingAccountRepository checkingAccountRepository;
-
-    @Autowired
-    SavingsAccountRepository savingsAccountRepository;
-
 
     public CheckingAccount() {
     }
@@ -24,29 +19,10 @@ public class CheckingAccount extends Account {
         super(owner);
 
     }
-
-    public void transferIn(Double amount) {
-        setBalance(getBalance() + amount);
-    }
-
-    public void transferOutChecking(Double amount, CheckingAccount checkingAccount) {
-        if (amount > checkingAccount.getBalance()) throw new IllegalArgumentException("Not enough funds to cover transfer");
-        setBalance(getBalance() - amount);
-        checkingAccount.transferIn(amount);
-        checkingAccountRepository.save(checkingAccount);
-    }
-
-    public void transferOutSavings(Double amount, SavingsAccount savingsAccount) {
-        setBalance(getBalance() - amount);
-        savingsAccount.transferIn(amount);
-        savingsAccountRepository.save(savingsAccount);
-    }
-
     @Override
     public double getBalance() {
         return super.getBalance();
     }
-
 
     @Override
     public void setBalance(Double balance) {

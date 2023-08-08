@@ -1,7 +1,5 @@
 package com.ironhack.crudbankapp.service.impl;
 
-import com.ironhack.crudbankapp.controller.impl.CheckingAccountController;
-import com.ironhack.crudbankapp.model.Account;
 import com.ironhack.crudbankapp.model.CheckingAccount;
 import com.ironhack.crudbankapp.model.SavingsAccount;
 import com.ironhack.crudbankapp.repository.CheckingAccountRepository;
@@ -9,10 +7,12 @@ import com.ironhack.crudbankapp.repository.SavingsAccountRepository;
 import com.ironhack.crudbankapp.service.interfaces.ICheckingAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
+@Service
 public class CheckingAccountService implements ICheckingAccountService {
 
     @Autowired
@@ -41,17 +41,27 @@ public class CheckingAccountService implements ICheckingAccountService {
         Optional<CheckingAccount> fromCheckingAccountOptional = checkingAccountRepository.findById(fromId);
         if (fromCheckingAccountOptional.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Account #" + fromId + " not found");
         CheckingAccount fromCheckingAccount = fromCheckingAccountOptional.get();
+        if (amount > fromCheckingAccount.getBalance()) throw new IllegalArgumentException("Not enough funds to cover transfer");
 
-        // Account destinationAccount;
         Optional<CheckingAccount> destinationCheckingAccountOptional = checkingAccountRepository.findById(destinationId);
         Optional<SavingsAccount> destinationSavingsAccountOptional = savingsAccountRepository.findById(destinationId);
         if (destinationCheckingAccountOptional.isPresent()) {
-            // destinationAccount = destinationCheckingAccountOptional.get();
-            fromCheckingAccount.transferOutChecking(amount, destinationCheckingAccountOptional.get());
+
+            // Debit funds from origin checking account
+            fromCheckingAccount.setBalance(fromCheckingAccount.getBalance() - amount);
+            // Credit funds to destination checking account
+            destinationCheckingAccountOptional.get().setBalance(destinationCheckingAccountOptional.get().getBalance() + amount);
+
+            checkingAccountRepository.save(destinationCheckingAccountOptional.get());
             checkingAccountRepository.save(fromCheckingAccount);
         } else if (destinationSavingsAccountOptional.isPresent()) {
-            // destinationAccount = destinationSavingsAccountOptional.get();
-            fromCheckingAccount.transferOutSavings(amount, destinationSavingsAccountOptional.get());
+
+            // Debit funds from origin checking account
+            fromCheckingAccount.setBalance(fromCheckingAccount.getBalance() - amount);
+            // Credit funds to destination checking account
+            destinationSavingsAccountOptional.get().setBalance(destinationSavingsAccountOptional.get().getBalance() + amount);
+
+            savingsAccountRepository.save(destinationSavingsAccountOptional.get());
             checkingAccountRepository.save(fromCheckingAccount);
         } else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Account #" + destinationId + " not found");
     }

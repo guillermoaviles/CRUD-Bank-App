@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -31,12 +32,12 @@ public class CheckingAccountController implements ICheckingAccountController {
         return checkingAccountRepository.findAll();
     }
 
-    @GetMapping("/accounts/checking/{id}")
+    @GetMapping("/accounts/checking/{accountNumber}")
     public CheckingAccount getCheckingAccountByAccountNumber(@PathVariable Integer accountNumber) {
         return checkingAccountService.getCheckingAccountByAccountNumber(accountNumber);
     }
 
-    @GetMapping("/accounts/savings/owner/{name}")
+    @GetMapping("/accounts/checking/owner/{name}")
     public List<CheckingAccount> getAllCheckingAccountsByOwner(@PathVariable String owner) {
         return checkingAccountRepository.findAllByOwner(owner);
     }
@@ -51,7 +52,7 @@ public class CheckingAccountController implements ICheckingAccountController {
 
     // **************************************************  PUT  *******************************************************
 
-    @PutMapping("/accounts/checking/{id}")
+    @PutMapping("/accounts/checking/{accountNumber}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateCheckingAccount(@RequestBody @Valid CheckingAccount checkingAccount, @PathVariable Integer accountNumber) {
         checkingAccountService.updateCheckingAccount(checkingAccount, accountNumber);
@@ -68,7 +69,7 @@ public class CheckingAccountController implements ICheckingAccountController {
 
     //  ***********************************************  DELETE  ******************************************************
 
-    @DeleteMapping("/accounts/checking/{id}")
+    @DeleteMapping("/accounts/checking/{accountNumber}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCheckingAccount(@PathVariable Integer accountNumber) {
         checkingAccountService.deleteCheckingAccount(accountNumber);

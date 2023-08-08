@@ -3,7 +3,8 @@ package com.ironhack.crudbankapp.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 
-@PrimaryKeyJoinColumn(name="id")
+@Entity
+@PrimaryKeyJoinColumn(name="accountNumber")
 public class SavingsAccount extends Account{
     private double interestRate;
 
@@ -13,10 +14,6 @@ public class SavingsAccount extends Account{
     public SavingsAccount(String owner, Double interestRate) {
         super(owner);
         this.interestRate = interestRate;
-    }
-
-    public void transferIn(Double amount) {
-        setBalance(getBalance() + amount);
     }
     public double getInterestRate() {
         return interestRate;

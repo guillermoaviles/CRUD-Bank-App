@@ -7,8 +7,9 @@ import jakarta.persistence.*;
 public abstract class Account {
 
     @Id
-    @SequenceGenerator(name = "mySeqGen", sequenceName = "mySeq", initialValue = 100000, allocationSize = 1)
-    @GeneratedValue(generator = "mySeqGen")
+//    @SequenceGenerator(name = "mySeqGen", sequenceName = "mySeq", initialValue = 100000, allocationSize = 1)
+//    @GeneratedValue(generator = "mySeqGen")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer accountNumber;
     private String owner;
     private Double balance;
@@ -40,7 +41,6 @@ public abstract class Account {
     public double getBalance() {
         return balance;
     }
-    abstract void transferIn(Double amount);
 
     public void setBalance(Double balance) {
         this.balance = balance;

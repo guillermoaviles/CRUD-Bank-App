@@ -48,7 +48,7 @@ public class SavingsAccountController implements ISavingsAccountController {
 
     //  ****************************************************  PUT  ****************************************************
 
-    @PutMapping("/accounts/savings/{id}")
+    @PutMapping("/accounts/savings/{accountNumber}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateAccount(@RequestBody @Valid SavingsAccount savingsAccount, @PathVariable Integer accountNumber) {
         savingsAccountService.updateSavingsAccount(savingsAccount, accountNumber);
