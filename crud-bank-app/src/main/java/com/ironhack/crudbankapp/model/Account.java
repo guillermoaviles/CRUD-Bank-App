@@ -3,18 +3,17 @@ package com.ironhack.crudbankapp.model;
 import jakarta.persistence.*;
 
 @Entity
-@Inheritance(strategy=InheritanceType.JOINED)
+@PrimaryKeyJoinColumn(name="accountNumber")
 public abstract class Account {
 
     @Id
-//    @SequenceGenerator(name = "mySeqGen", sequenceName = "mySeq", initialValue = 100000, allocationSize = 1)
-//    @GeneratedValue(generator = "mySeqGen")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer accountNumber;
     private String owner;
     private Double balance;
 
     public Account() {
+        this.balance = 0.0;
     }
 
     public Account(String owner) {
