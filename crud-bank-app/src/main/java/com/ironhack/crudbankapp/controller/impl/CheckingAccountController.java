@@ -51,6 +51,8 @@ public class CheckingAccountController implements ICheckingAccountController {
         checkingAccountService.updateCheckingAccount(checkingAccount, accountNumber);
     }
 
+    // *************************************************  PATCH  ******************************************************
+
     @PatchMapping("/accounts/checking/transfer/{fromId}/{destinationId}/{amount}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void transfer(@PathVariable Integer fromId, @PathVariable Integer destinationId, @PathVariable AmountDTO amountDTO) {
@@ -58,7 +60,7 @@ public class CheckingAccountController implements ICheckingAccountController {
     }
 
 
-    //  **************************************************  DELETE  ***************************************************
+    //  ***********************************************  DELETE  ******************************************************
 
     @DeleteMapping("/accounts/checking/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
