@@ -30,6 +30,7 @@ public class CheckingAccount extends Account {
     }
 
     public void transferOutChecking(Double amount, CheckingAccount checkingAccount) {
+        if (amount > checkingAccount.getBalance()) throw new IllegalArgumentException("Not enough funds to cover transfer");
         setBalance(getBalance() - amount);
         checkingAccount.transferIn(amount);
         checkingAccountRepository.save(checkingAccount);

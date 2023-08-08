@@ -1,5 +1,6 @@
 package com.ironhack.crudbankapp.controller.interfaces;
 
+import com.ironhack.crudbankapp.dtos.AmountDTO;
 import com.ironhack.crudbankapp.model.CheckingAccount;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,5 +13,6 @@ public interface ICheckingAccountController {
     CheckingAccount getCheckingAccountByAccountNumber(@PathVariable Integer accountNumber);
     void saveCheckingAccount(@RequestBody @Valid CheckingAccount checkingAccount);
     void updateCheckingAccount(@RequestBody @Valid CheckingAccount checkingAccount, @PathVariable Integer accountNumber);
+    void transfer(@PathVariable Integer fromId, @PathVariable Integer destinationId, @PathVariable AmountDTO amountDTO);
     void deleteCheckingAccount(@PathVariable Integer accountNumber);
 }
