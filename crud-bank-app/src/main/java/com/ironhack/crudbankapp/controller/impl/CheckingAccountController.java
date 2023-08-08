@@ -3,6 +3,7 @@ package com.ironhack.crudbankapp.controller.impl;
 import com.ironhack.crudbankapp.controller.interfaces.ICheckingAccountController;
 import com.ironhack.crudbankapp.dtos.AmountDTO;
 import com.ironhack.crudbankapp.model.CheckingAccount;
+import com.ironhack.crudbankapp.model.SavingsAccount;
 import com.ironhack.crudbankapp.repository.CheckingAccountRepository;
 import com.ironhack.crudbankapp.service.impl.CheckingAccountService;
 import jakarta.validation.Valid;
@@ -33,6 +34,11 @@ public class CheckingAccountController implements ICheckingAccountController {
     @GetMapping("/accounts/checking/{id}")
     public CheckingAccount getCheckingAccountByAccountNumber(@PathVariable Integer accountNumber) {
         return checkingAccountService.getCheckingAccountByAccountNumber(accountNumber);
+    }
+
+    @GetMapping("/accounts/savings/owner/{name}")
+    public List<CheckingAccount> getAllCheckingAccountsByOwner(@PathVariable String owner) {
+        return checkingAccountRepository.findAllByOwner(owner);
     }
 
     // **************************************************  POST  ******************************************************
