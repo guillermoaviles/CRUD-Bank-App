@@ -22,7 +22,7 @@ public class CheckingAccountController implements ICheckingAccountController {
     @Autowired
     CheckingAccountService checkingAccountService;
 
-    // *************************************** GET ***********************************************
+    // **************************************************** GET ***********************************************
 
     @GetMapping("/accounts/checking")
     @ResponseStatus(HttpStatus.OK)
