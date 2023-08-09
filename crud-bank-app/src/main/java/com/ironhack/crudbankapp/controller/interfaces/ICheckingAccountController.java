@@ -14,6 +14,6 @@ public interface ICheckingAccountController {
     List<CheckingAccount> getAllCheckingAccountsByOwner(@PathVariable String owner);
     void saveCheckingAccount(@RequestBody @Valid CheckingAccount checkingAccount);
     void updateCheckingAccount(@RequestBody @Valid CheckingAccount checkingAccount, @PathVariable Integer accountNumber);
-    void transfer(@PathVariable Integer fromId, @PathVariable Integer destinationId, @PathVariable AmountDTO amountDTO);
+    void transfer(@PathVariable Integer fromId, @PathVariable Integer destinationId, @PathVariable Double amountDTO);
     void deleteCheckingAccount(@PathVariable Integer accountNumber);
 }
