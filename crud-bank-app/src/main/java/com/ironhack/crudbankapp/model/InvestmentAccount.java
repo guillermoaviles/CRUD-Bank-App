@@ -4,26 +4,36 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 
+import java.util.List;
+
 @Entity
 @Inheritance(strategy= InheritanceType.JOINED)
 public class InvestmentAccount extends Account{
-    private Double interestRate;
-
+    private Double apy;
+    private List<Deposit> deposits;
     public InvestmentAccount() {
         super();
     }
 
-    public InvestmentAccount(String owner, Double interestRate) {
+    public InvestmentAccount(String owner, Double apy) {
         super(owner);
-        this.interestRate = interestRate;
+        this.apy = apy;
     }
 
-    public double getInterestRate() {
-        return interestRate;
+    public Double getAPY() {
+        return apy;
     }
 
-    public void setInterestRate(Double interestRate) {
-        this.interestRate = interestRate;
+    public void setAPY(Double apy) {
+        this.apy = apy;
+    }
+
+    public List<Deposit> getDeposits() {
+        return deposits;
+    }
+
+    public void setDeposits(List<Deposit> deposits) {
+        this.deposits = deposits;
     }
 
     @Override
