@@ -3,7 +3,6 @@ package com.ironhack.crudbankapp.controller.impl;
 import com.ironhack.crudbankapp.controller.interfaces.ICheckingAccountController;
 import com.ironhack.crudbankapp.dtos.AmountDTO;
 import com.ironhack.crudbankapp.model.CheckingAccount;
-import com.ironhack.crudbankapp.model.SavingsAccount;
 import com.ironhack.crudbankapp.repository.CheckingAccountRepository;
 import com.ironhack.crudbankapp.service.impl.CheckingAccountService;
 import jakarta.validation.Valid;
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController

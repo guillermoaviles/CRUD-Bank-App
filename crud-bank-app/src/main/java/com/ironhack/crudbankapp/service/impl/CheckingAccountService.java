@@ -1,9 +1,9 @@
 package com.ironhack.crudbankapp.service.impl;
 
 import com.ironhack.crudbankapp.model.CheckingAccount;
-import com.ironhack.crudbankapp.model.SavingsAccount;
+import com.ironhack.crudbankapp.model.InvestmentAccount;
 import com.ironhack.crudbankapp.repository.CheckingAccountRepository;
-import com.ironhack.crudbankapp.repository.SavingsAccountRepository;
+import com.ironhack.crudbankapp.repository.InvestmentAccountRepository;
 import com.ironhack.crudbankapp.service.interfaces.ICheckingAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,7 +19,7 @@ public class CheckingAccountService implements ICheckingAccountService {
     CheckingAccountRepository checkingAccountRepository;
 
     @Autowired
-    SavingsAccountRepository savingsAccountRepository;
+    InvestmentAccountRepository investmentAccountRepository;
 
     @Override
     public CheckingAccount getCheckingAccountByAccountNumber(Integer accountNumber) {
@@ -44,7 +44,7 @@ public class CheckingAccountService implements ICheckingAccountService {
         if (amount > fromCheckingAccount.getBalance()) throw new IllegalArgumentException("Not enough funds to cover transfer");
 
         Optional<CheckingAccount> destinationCheckingAccountOptional = checkingAccountRepository.findById(destinationId);
-        Optional<SavingsAccount> destinationSavingsAccountOptional = savingsAccountRepository.findById(destinationId);
+        Optional<InvestmentAccount> destinationSavingsAccountOptional = investmentAccountRepository.findById(destinationId);
         if (destinationCheckingAccountOptional.isPresent()) {
 
             // Debit funds from origin checking account
@@ -61,7 +61,7 @@ public class CheckingAccountService implements ICheckingAccountService {
             // Credit funds to destination checking account
             destinationSavingsAccountOptional.get().setBalance(destinationSavingsAccountOptional.get().getBalance() + amount);
 
-            savingsAccountRepository.save(destinationSavingsAccountOptional.get());
+            investmentAccountRepository.save(destinationSavingsAccountOptional.get());
             checkingAccountRepository.save(fromCheckingAccount);
         } else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Account #" + destinationId + " not found");
     }

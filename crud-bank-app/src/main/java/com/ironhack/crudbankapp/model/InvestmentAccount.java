@@ -3,18 +3,17 @@ package com.ironhack.crudbankapp.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
-import jakarta.persistence.PrimaryKeyJoinColumn;
 
 @Entity
 @Inheritance(strategy= InheritanceType.JOINED)
-public class SavingsAccount extends Account{
+public class InvestmentAccount extends Account{
     private Double interestRate;
 
-    public SavingsAccount() {
+    public InvestmentAccount() {
         super();
     }
 
-    public SavingsAccount(String owner, Double interestRate) {
+    public InvestmentAccount(String owner, Double interestRate) {
         super(owner);
         this.interestRate = interestRate;
     }
