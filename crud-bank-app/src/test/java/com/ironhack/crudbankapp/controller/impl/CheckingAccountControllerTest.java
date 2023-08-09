@@ -14,7 +14,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -31,22 +31,16 @@ class CheckingAccountControllerTest {
     ObjectMapper objectMapper = new ObjectMapper();
 
     CheckingAccount checkingAccount1;
-    CheckingAccount checkingAccount2;
-    CheckingAccount checkingAccount3;
 
     @BeforeEach
-    void setUp() {
+    public void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
         checkingAccount1 = new CheckingAccount("Guillermo Aviles");
-        checkingAccount2 = new CheckingAccount("Sofia Mendez");
-        checkingAccount3 = new CheckingAccount("Bayi Aviles");
     }
 
     @AfterEach
-    void tearDown() {
-        checkingAccountRepository.deleteById(1);
-        checkingAccountRepository.deleteById(2);
-        checkingAccountRepository.deleteById(3);
+    public void tearDown() {
+//        checkingAccountRepository.deleteById(100001);
     }
 
     @Test
@@ -61,11 +55,27 @@ class CheckingAccountControllerTest {
     }
 
     @Test
-    void updateCheckingAccount_validBody_checkingAccountUpdated() {
+    void updateCheckingAccount_validBody_checkingAccountUpdated() throws Exception {
+        checkingAccountRepository.save(checkingAccount1);
+        checkingAccount1.setBalance(50.0);
 
+        String body = objectMapper.writeValueAsString(checkingAccount1);
+
+        mockMvc.perform(put("/api/accounts/checking/" + checkingAccount1.getAccountNumber()).content(body).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent())
+                .andReturn();
+
+        assertTrue(checkingAccountRepository.findAll().toString().contains("50.0"));
     }
 
     @Test
-    void deleteCheckingAccount() {
+    void deleteCheckingAccount() throws Exception {
+        checkingAccountRepository.save(checkingAccount1);
+
+        mockMvc.perform(delete("/api/accounts/checking/" + checkingAccount1.getAccountNumber()))
+                .andExpect(status().isNoContent())
+                .andReturn();
+
+        assertFalse(checkingAccountRepository.findAll().toString().contains("Guillermo Aviles"));
     }
 }
