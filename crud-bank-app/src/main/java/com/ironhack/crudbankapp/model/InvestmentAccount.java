@@ -1,5 +1,6 @@
 package com.ironhack.crudbankapp.model;
 
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
@@ -10,6 +11,7 @@ import java.util.List;
 @Inheritance(strategy= InheritanceType.JOINED)
 public class InvestmentAccount extends Account{
     private Double apy;
+    @Embedded
     private List<Deposit> deposits;
     public InvestmentAccount() {
         super();

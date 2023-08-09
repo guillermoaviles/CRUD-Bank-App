@@ -26,7 +26,7 @@ public class InvestmentAccountService implements IInvestmentAccountService {
     @Override
     public void updateInvestmentAccount(InvestmentAccount investmentAccount, Integer accountNumber) {
         Optional<InvestmentAccount> savingsAccountOptional = investmentAccountRepository.findById(accountNumber);
-        if (savingsAccountOptional.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Account number " + accountNumber + " not found");
+        if (savingsAccountOptional.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Account #" + accountNumber + " not found");
         investmentAccount.setAccountNumber(accountNumber);
         investmentAccountRepository.save(investmentAccount);
     }
@@ -34,7 +34,7 @@ public class InvestmentAccountService implements IInvestmentAccountService {
     @Override
     public void deleteInvestmentAccount(Integer accountNumber) {
         Optional<InvestmentAccount> savingsAccountOptional = investmentAccountRepository.findById(accountNumber);
-        if (savingsAccountOptional.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Account number " + accountNumber + " not found");
+        if (savingsAccountOptional.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Account #" + accountNumber + " not found");
         investmentAccountRepository.deleteById(accountNumber);
     }
 }
