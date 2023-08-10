@@ -1,29 +1,25 @@
 package com.ironhack.crudbankapp.model;
 
-import jakarta.persistence.Embeddable;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Date;
 
-@Embeddable
+@Entity
 public class Deposit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer depositId;
-    private Date depositDate;
-    private Date unlockDate;
-    private Double amount;
+    private LocalDate depositDate;
+    private LocalDate unlockDate;
+    private BigDecimal amount;
 
     public Deposit() {
     }
-    public Deposit(Date depositDate, Date unlockDate, Double amount) {
-        this.depositDate = depositDate;
-        this.unlockDate = unlockDate;
-        this.amount = amount;
+
+    public Deposit(BigDecimal amount, LocalDate depositDate, LocalDate unlockDate, InvestmentAccount investmentAccount) {
     }
 
     public Integer getDepositId() {
@@ -34,27 +30,27 @@ public class Deposit {
         this.depositId = depositId;
     }
 
-    public Date getDepositDate() {
+    public LocalDate getDepositDate() {
         return depositDate;
     }
 
-    public void setDepositDate(Date depositDate) {
+    public void setDepositDate(LocalDate depositDate) {
         this.depositDate = depositDate;
     }
 
-    public Date getUnlockDate() {
+    public LocalDate getUnlockDate() {
         return unlockDate;
     }
 
-    public void setUnlockDate(Date unlockDate) {
+    public void setUnlockDate(LocalDate unlockDate) {
         this.unlockDate = unlockDate;
     }
 
-    public Double getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(Double amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
     @Override
