@@ -38,20 +38,22 @@ public class InvestmentAccountService implements IInvestmentAccountService {
     }
 
     @Override
-    public void withdraw(String owner, BigDecimal amount) {
-        Optional<InvestmentAccount> investmentAccountOptional = Optional.ofNullable(investmentAccountRepository.findInvestmentAccountByOwner(owner));
-        if (investmentAccountOptional.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, owner + "'s investment account not found");
-        Optional<CheckingAccount> checkingAccountOptional = Optional.ofNullable(checkingAccountRepository.findCheckingAccountByOwner(owner));
-        if (checkingAccountOptional.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, owner + "'s checking account not found");
+    public void withdraw(Integer accountNumber, BigDecimal amount) {
+        Optional<InvestmentAccount> investmentAccountOptional = investmentAccountRepository.findById(accountNumber);
+        if (investmentAccountOptional.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Account #" + accountNumber + " not found");
+        Optional<CheckingAccount> checkingAccountOptional = Optional.ofNullable(checkingAccountRepository.findCheckingAccountByOwner(investmentAccountOptional.get().getOwner()));
+        if (checkingAccountOptional.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Account #" + accountNumber + " not found");
 
         investmentAccountOptional.get().withdraw(amount);
         checkingAccountOptional.get().setBalance(checkingAccountOptional.get().getBalance().add(amount));
+        investmentAccountRepository.save(investmentAccountOptional.get());
+        checkingAccountRepository.save(checkingAccountOptional.get());
     }
 
     @Override
     public void deleteInvestmentAccount(Integer accountNumber) {
-        Optional<InvestmentAccount> savingsAccountOptional = investmentAccountRepository.findById(accountNumber);
-        if (savingsAccountOptional.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Account #" + accountNumber + " not found");
+        Optional<InvestmentAccount> investmentAccountOptional = investmentAccountRepository.findById(accountNumber);
+        if (investmentAccountOptional.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Account #" + accountNumber + " not found");
         investmentAccountRepository.deleteById(accountNumber);
     }
 }

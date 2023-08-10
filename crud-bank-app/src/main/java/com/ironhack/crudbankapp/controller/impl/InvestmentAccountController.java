@@ -24,25 +24,25 @@ public class InvestmentAccountController implements IInvestmentAccountController
     InvestmentAccountService investmentAccountService;
 
     // **************************************************  GET  *******************************************************
-    @GetMapping("/accounts/savings")
+    @GetMapping("/accounts/investment")
     @ResponseStatus(HttpStatus.OK)
     public List<InvestmentAccount> getAllInvestmentAccounts() {
         return investmentAccountRepository.findAll();
     }
 
-    @GetMapping("/accounts/savings/{accountNumber}")
+    @GetMapping("/accounts/investment/{accountNumber}")
     public InvestmentAccount getInvestmentAccountByAccountNumber(@PathVariable Integer accountNumber) {
         return investmentAccountService.getInvestmentAccountByAccountNumber(accountNumber);
     }
 
-    @GetMapping("/accounts/savings/owner/{name}")
+    @GetMapping("/accounts/investment/owner/{name}")
     public InvestmentAccount getInvestmentAccountByOwner(@PathVariable String owner) {
         return investmentAccountRepository.findInvestmentAccountByOwner(owner);
     }
 
     // **************************************************  POST  ******************************************************
 
-    @PostMapping("/accounts/savings")
+    @PostMapping("/accounts/investment")
     @ResponseStatus(HttpStatus.CREATED)
     public void saveAccount(@RequestBody @Valid InvestmentAccount investmentAccount) {
         investmentAccountRepository.save(investmentAccount);
@@ -50,7 +50,7 @@ public class InvestmentAccountController implements IInvestmentAccountController
 
     //  ****************************************************  PUT  ****************************************************
 
-    @PutMapping("/accounts/savings/{accountNumber}")
+    @PutMapping("/accounts/investment/{accountNumber}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateAccount(@RequestBody @Valid InvestmentAccount investmentAccount, @PathVariable Integer accountNumber) {
         investmentAccountService.updateInvestmentAccount(investmentAccount, accountNumber);
@@ -58,16 +58,16 @@ public class InvestmentAccountController implements IInvestmentAccountController
 
     //  **************************************************  PATCH  ****************************************************
 
-    @PatchMapping("/accounts/savings/withdraw/{owner}/{amount}")
+    @PatchMapping("/accounts/investment/withdraw/{accountNumber}/{amount}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void withdraw(@PathVariable String owner, @PathVariable BigDecimal amount) {
+    public void withdraw(@PathVariable Integer accountNumber, @PathVariable BigDecimal amount) {
         AmountDTO amountDTO = new AmountDTO(amount);
-        investmentAccountService.withdraw(owner, amountDTO.getAmount());
+        investmentAccountService.withdraw(accountNumber, amountDTO.getAmount());
     }
 
     //  **************************************************  DELETE  ***************************************************
 
-    @DeleteMapping("/accounts/savings/{accountNumber}")
+    @DeleteMapping("/accounts/investment/{accountNumber}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteAccount(@PathVariable Integer accountNumber) {
         investmentAccountService.deleteInvestmentAccount(accountNumber);

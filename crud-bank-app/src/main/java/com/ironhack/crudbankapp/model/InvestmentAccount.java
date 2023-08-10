@@ -3,7 +3,9 @@ package com.ironhack.crudbankapp.model;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,11 +18,12 @@ public class InvestmentAccount extends Account{
     private List<Deposit> deposits = new ArrayList<>();
     public InvestmentAccount() {
         super();
+        this.apy = BigDecimal.valueOf(10);
     }
 
     public InvestmentAccount(String owner, BigDecimal apy) {
         super(owner);
-        this.apy = apy;
+        this.apy = BigDecimal.valueOf(10);
     }
 
     public BigDecimal getAPY() {
@@ -67,7 +70,8 @@ public class InvestmentAccount extends Account{
 
         for (Deposit deposit : deposits) {
             if (currentDate.isAfter(deposit.getUnlockDate())) {
-                availableBalance = availableBalance.add(deposit.getAmount());
+                BigDecimal depositAmountWithInterest = calculateAmountWithInterest(deposit);
+                availableBalance = availableBalance.add(depositAmountWithInterest);
             }
         }
         return availableBalance;
@@ -76,15 +80,31 @@ public class InvestmentAccount extends Account{
     private void liquidateDeposits(BigDecimal withdrawalAmount) {
         LocalDate currentDate = LocalDate.now();
 
+        List<Deposit> depositsToDelete = new ArrayList<>();
         for (Deposit deposit : deposits) {
             if (currentDate.isAfter(deposit.getUnlockDate())) {
-                BigDecimal depositAmount = deposit.getAmount();
+                BigDecimal depositAmount = calculateAmountWithInterest(deposit);
                 if (withdrawalAmount.compareTo(depositAmount) >= 0) {
                     withdrawalAmount = withdrawalAmount.subtract(depositAmount);
-                    deposits.remove(deposit);
+                    depositsToDelete.add(deposit);
+                } else if (withdrawalAmount.compareTo(depositAmount) < 0) {
+                    withdrawalAmount = BigDecimal.valueOf(0);
+                    deposit.setAmount(depositAmount.subtract(withdrawalAmount));
                 }
             }
         }
+        for (Deposit deposit : depositsToDelete) {
+            deposits.remove(deposit);
+        }
+    }
+
+    private BigDecimal calculateAmountWithInterest(Deposit deposit) {
+        BigDecimal amount = deposit.getAmount();
+        int daysBetween = (int) ChronoUnit.DAYS.between(deposit.getDepositDate(), deposit.getUnlockDate());
+
+        // Calculate the compound interest formula: amount * (1 + APY)^days
+        BigDecimal compoundFactor = BigDecimal.ONE.add(apy.divide(BigDecimal.valueOf(100), MathContext.DECIMAL128).divide(BigDecimal.valueOf(365), MathContext.DECIMAL128)).pow(daysBetween);
+        return amount.multiply(compoundFactor);
     }
 
     @Override

@@ -12,5 +12,5 @@ public interface IInvestmentAccountService {
 
     void deleteInvestmentAccount(Integer accountNumber);
 
-    void withdraw(String owner, BigDecimal amount);
+    void withdraw(Integer accountNumber, BigDecimal amount);
 }
