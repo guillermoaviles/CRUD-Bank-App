@@ -1,17 +1,14 @@
 package com.ironhack.crudbankapp.model;
 
-import com.ironhack.crudbankapp.repository.CheckingAccountRepository;
-import com.ironhack.crudbankapp.repository.SavingsAccountRepository;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.PrimaryKeyJoinColumn;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
+
+import java.math.BigDecimal;
 
 @Entity
-@Inheritance(strategy= InheritanceType.JOINED)
+@PrimaryKeyJoinColumn(name = "accountNumber")
 public class CheckingAccount extends Account {
 
     public CheckingAccount() {
@@ -22,12 +19,12 @@ public class CheckingAccount extends Account {
         super(owner);
     }
     @Override
-    public double getBalance() {
+    public BigDecimal getBalance() {
         return super.getBalance();
     }
 
     @Override
-    public void setBalance(Double balance) {
+    public void setBalance(BigDecimal balance) {
         super.setBalance(balance);
     }
 

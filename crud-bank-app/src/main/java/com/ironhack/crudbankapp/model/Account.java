@@ -1,25 +1,30 @@
 package com.ironhack.crudbankapp.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+
+import java.math.BigDecimal;
 
 @Entity
-@PrimaryKeyJoinColumn(name="accountNumber")
+@Inheritance(strategy= InheritanceType.JOINED)
 public abstract class Account {
 
     @Id
     @SequenceGenerator(name = "mySeqGen", sequenceName = "mySeq", initialValue = 100000, allocationSize = 1)
     @GeneratedValue(generator = "mySeqGen")
     private Integer accountNumber;
+//    @NotEmpty
     private String owner;
-    private Double balance;
+    @Column(columnDefinition = "DECIMAL(5,2)")
+    private BigDecimal balance;
 
     public Account() {
-        this.balance = 0.0;
+        this.balance = new BigDecimal(0);
     }
 
     public Account(String owner) {
         this.owner = owner;
-        this.balance = 0.0;
+        this.balance = new BigDecimal(0);
     }
 
     public Integer getAccountNumber() {
@@ -38,11 +43,11 @@ public abstract class Account {
         this.owner = owner;
     }
 
-    public double getBalance() {
+    public BigDecimal getBalance() {
         return balance;
     }
 
-    public void setBalance(Double balance) {
+    public void setBalance(BigDecimal balance) {
         this.balance = balance;
     }
 

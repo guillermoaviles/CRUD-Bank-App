@@ -13,6 +13,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.math.BigDecimal;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -57,7 +59,7 @@ class CheckingAccountControllerTest {
     @Test
     void updateCheckingAccount_validBody_checkingAccountUpdated() throws Exception {
         checkingAccountRepository.save(checkingAccount1);
-        checkingAccount1.setBalance(50.0);
+        checkingAccount1.setBalance(BigDecimal.valueOf(50.0));
 
         String body = objectMapper.writeValueAsString(checkingAccount1);
 

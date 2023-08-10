@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface CheckingAccountRepository extends JpaRepository<CheckingAccount, Integer> {
-    List<CheckingAccount> findAllByOwner(String owner);
+    CheckingAccount findCheckingAccountByOwner(String owner);
 }
