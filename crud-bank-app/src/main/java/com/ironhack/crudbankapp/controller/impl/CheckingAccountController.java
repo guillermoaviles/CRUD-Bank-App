@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -36,8 +37,8 @@ public class CheckingAccountController implements ICheckingAccountController {
     }
 
     @GetMapping("/accounts/checking/owner/{name}")
-    public List<CheckingAccount> getAllCheckingAccountsByOwner(@PathVariable String owner) {
-        return checkingAccountRepository.findAllByOwner(owner);
+    public CheckingAccount getCheckingAccountByOwner(@PathVariable String owner) {
+        return checkingAccountRepository.findCheckingAccountByOwner(owner);
     }
 
     // **************************************************  POST  ******************************************************
@@ -60,7 +61,7 @@ public class CheckingAccountController implements ICheckingAccountController {
 
     @PatchMapping("/accounts/checking/transfer/{fromId}/{destinationId}/{amount}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void transfer(@PathVariable Integer fromId, @PathVariable Integer destinationId, @PathVariable Double amount) {
+    public void transfer(@PathVariable Integer fromId, @PathVariable Integer destinationId, @PathVariable BigDecimal amount) {
         AmountDTO amountDTO = new AmountDTO(amount);
         checkingAccountService.transfer(fromId, destinationId, amountDTO.getAmount());
     }

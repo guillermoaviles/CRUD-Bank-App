@@ -1,20 +1,18 @@
 package com.ironhack.crudbankapp.model;
 
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
+import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Inheritance(strategy= InheritanceType.JOINED)
+@PrimaryKeyJoinColumn(name = "accountNumber")
 public class InvestmentAccount extends Account{
     private BigDecimal apy;
-    @Embedded
-    private List<Deposit> deposits;
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Deposit> deposits = new ArrayList<>();
     public InvestmentAccount() {
         super();
     }
@@ -52,7 +50,7 @@ public class InvestmentAccount extends Account{
 
     public void deposit(BigDecimal amount) {
         LocalDate depositDate = LocalDate.now();
-        LocalDate unlockDate = depositDate.plusMonths(6); // Adjust unlock period as needed
+        LocalDate unlockDate = depositDate.plusDays(2); // Adjust unlock period as needed
 
         Deposit deposit = new Deposit(amount, depositDate, unlockDate, this);
         deposits.add(deposit);
@@ -64,7 +62,7 @@ public class InvestmentAccount extends Account{
 
         if (amount.compareTo(availableBalance) <= 0) {
             setBalance(getBalance().subtract(amount));
-            // Implement logic to liquidate deposits
+            // Logic to liquidate deposits
             liquidateDeposits(amount);
         } else {
             throw new IllegalArgumentException("Insufficient funds");
@@ -73,7 +71,7 @@ public class InvestmentAccount extends Account{
 
     private BigDecimal calculateAvailableBalance() {
         LocalDate currentDate = LocalDate.now();
-        BigDecimal availableBalance = getBalance();
+        BigDecimal availableBalance = BigDecimal.valueOf(0);
 
         for (Deposit deposit : deposits) {
             if (currentDate.isAfter(deposit.getUnlockDate())) {

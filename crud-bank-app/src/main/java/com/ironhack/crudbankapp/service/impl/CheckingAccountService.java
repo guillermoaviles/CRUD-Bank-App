@@ -42,7 +42,9 @@ public class CheckingAccountService implements ICheckingAccountService {
         Optional<CheckingAccount> fromCheckingAccountOptional = checkingAccountRepository.findById(fromId);
         if (fromCheckingAccountOptional.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Account #" + fromId + " not found");
         CheckingAccount fromCheckingAccount = fromCheckingAccountOptional.get();
-        if (amount > fromCheckingAccount.getBalance()) throw new IllegalArgumentException("Not enough funds to cover transfer");
+        if (amount.compareTo(fromCheckingAccount.getBalance()) > 0) {
+            throw new IllegalArgumentException("Not enough funds to cover transfer");
+        }
 
         Optional<CheckingAccount> destinationCheckingAccountOptional = checkingAccountRepository.findById(destinationId);
         Optional<InvestmentAccount> destinationInvestmentAccountOptional = investmentAccountRepository.findById(destinationId);
@@ -60,7 +62,7 @@ public class CheckingAccountService implements ICheckingAccountService {
             // Debit funds from origin checking account
             fromCheckingAccount.setBalance(fromCheckingAccount.getBalance().subtract(amount));
             // Credit funds to destination checking account
-            destinationInvestmentAccountOptional.get().setBalance(destinationInvestmentAccountOptional.get().getBalance().add(amount));
+            destinationInvestmentAccountOptional.get().deposit(amount);
 
             investmentAccountRepository.save(destinationInvestmentAccountOptional.get());
             checkingAccountRepository.save(fromCheckingAccount);

@@ -10,7 +10,7 @@ import java.util.List;
 public interface IInvestmentAccountController {
     List<InvestmentAccount> getAllInvestmentAccounts();
     InvestmentAccount getInvestmentAccountByAccountNumber(@PathVariable Integer accountNumber);
-    List<InvestmentAccount> getAllInvestmentAccountsByOwner(@PathVariable String owner);
+    InvestmentAccount getInvestmentAccountByOwner(@PathVariable String owner);
     void saveAccount(@RequestBody @Valid InvestmentAccount investmentAccount);
     void updateAccount(@RequestBody @Valid InvestmentAccount investmentAccount, @PathVariable Integer accountNumber);
     void deleteAccount(@PathVariable Integer accountNumber);

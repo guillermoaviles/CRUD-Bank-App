@@ -2,6 +2,8 @@ package com.ironhack.crudbankapp.service.interfaces;
 
 import com.ironhack.crudbankapp.model.InvestmentAccount;
 
+import java.math.BigDecimal;
+
 public interface IInvestmentAccountService {
 
     InvestmentAccount getInvestmentAccountByAccountNumber(Integer accountNumber);
@@ -9,4 +11,6 @@ public interface IInvestmentAccountService {
     void updateInvestmentAccount(InvestmentAccount investmentAccount, Integer accountNumber);
 
     void deleteInvestmentAccount(Integer accountNumber);
+
+    void withdraw(String owner, BigDecimal amount);
 }
