@@ -1,8 +1,6 @@
 package com.ironhack.crudbankapp.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
-
 import java.math.BigDecimal;
 
 @Entity
