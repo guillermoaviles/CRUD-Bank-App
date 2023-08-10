@@ -2,6 +2,7 @@ package com.ironhack.crudbankapp.controller.impl;
 
 import com.ironhack.crudbankapp.controller.interfaces.ICheckingAccountController;
 import com.ironhack.crudbankapp.dtos.AmountDTO;
+import com.ironhack.crudbankapp.model.Account;
 import com.ironhack.crudbankapp.model.CheckingAccount;
 import com.ironhack.crudbankapp.repository.CheckingAccountRepository;
 import com.ironhack.crudbankapp.service.impl.CheckingAccountService;

@@ -11,7 +11,8 @@ import java.util.List;
 @PrimaryKeyJoinColumn(name = "accountNumber")
 public class InvestmentAccount extends Account{
     private BigDecimal apy;
-    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "investmentAccount_id")
     private List<Deposit> deposits = new ArrayList<>();
     public InvestmentAccount() {
         super();
@@ -46,15 +47,6 @@ public class InvestmentAccount extends Account{
     @Override
     public void setBalance(BigDecimal balance) {
         super.setBalance(balance);
-    }
-
-    public void deposit(BigDecimal amount) {
-        LocalDate depositDate = LocalDate.now();
-        LocalDate unlockDate = depositDate.plusDays(2); // Adjust unlock period as needed
-
-        Deposit deposit = new Deposit(amount, depositDate, unlockDate, this);
-        deposits.add(deposit);
-        setBalance(getBalance().add(amount));
     }
 
     public void withdraw(BigDecimal amount) {

@@ -1,8 +1,10 @@
 package com.ironhack.crudbankapp.service.impl;
 
 import com.ironhack.crudbankapp.model.CheckingAccount;
+import com.ironhack.crudbankapp.model.Deposit;
 import com.ironhack.crudbankapp.model.InvestmentAccount;
 import com.ironhack.crudbankapp.repository.CheckingAccountRepository;
+import com.ironhack.crudbankapp.repository.DepositRepository;
 import com.ironhack.crudbankapp.repository.InvestmentAccountRepository;
 import com.ironhack.crudbankapp.service.interfaces.ICheckingAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -21,6 +25,9 @@ public class CheckingAccountService implements ICheckingAccountService {
 
     @Autowired
     InvestmentAccountRepository investmentAccountRepository;
+
+    @Autowired
+    DepositRepository depositRepository;
 
     @Override
     public CheckingAccount getCheckingAccountByAccountNumber(Integer accountNumber) {
@@ -62,11 +69,23 @@ public class CheckingAccountService implements ICheckingAccountService {
             // Debit funds from origin checking account
             fromCheckingAccount.setBalance(fromCheckingAccount.getBalance().subtract(amount));
             // Credit funds to destination checking account
-            destinationInvestmentAccountOptional.get().deposit(amount);
+            deposit(amount, destinationInvestmentAccountOptional.get());
 
             investmentAccountRepository.save(destinationInvestmentAccountOptional.get());
             checkingAccountRepository.save(fromCheckingAccount);
         } else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Account #" + destinationId + " not found");
+    }
+
+    public void deposit(BigDecimal amount, InvestmentAccount investmentAccount) {
+        LocalDate depositDate = LocalDate.now();
+        LocalDate unlockDate = depositDate.plusDays(2); // Adjust unlock period as needed
+
+        Deposit deposit = new Deposit(amount, depositDate, unlockDate, investmentAccount);
+        depositRepository.save(deposit);
+        List<Deposit> updatedDeposits = investmentAccount.getDeposits();
+        updatedDeposits.add(deposit);
+        investmentAccount.setDeposits(updatedDeposits);
+        investmentAccount.setBalance(investmentAccount.getBalance().add(amount));
     }
 
     @Override
