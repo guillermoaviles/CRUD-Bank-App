@@ -19,7 +19,11 @@ public class Deposit {
     public Deposit() {
     }
 
-    public Deposit(BigDecimal amount, LocalDate depositDate, LocalDate unlockDate, InvestmentAccount investmentAccount) {
+    public Deposit(BigDecimal amount, LocalDate depositDate, LocalDate unlockDate) {
+        this.amount = amount;
+        this.depositDate = depositDate;
+        this.unlockDate = unlockDate;
+
     }
 
     public Integer getDepositId() {
@@ -53,6 +57,7 @@ public class Deposit {
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
+
     @Override
     public String toString() {
         return "Deposit{" +

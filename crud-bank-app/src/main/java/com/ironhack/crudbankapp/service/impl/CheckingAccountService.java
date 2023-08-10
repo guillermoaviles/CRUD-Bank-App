@@ -80,12 +80,13 @@ public class CheckingAccountService implements ICheckingAccountService {
         LocalDate depositDate = LocalDate.now();
         LocalDate unlockDate = depositDate.plusDays(2); // Adjust unlock period as needed
 
-        Deposit deposit = new Deposit(amount, depositDate, unlockDate, investmentAccount);
+        Deposit deposit = new Deposit(amount, depositDate, unlockDate);
         depositRepository.save(deposit);
         List<Deposit> updatedDeposits = investmentAccount.getDeposits();
         updatedDeposits.add(deposit);
         investmentAccount.setDeposits(updatedDeposits);
         investmentAccount.setBalance(investmentAccount.getBalance().add(amount));
+
     }
 
     @Override
