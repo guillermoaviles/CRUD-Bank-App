@@ -6,7 +6,8 @@ The CRUD Bank App is a banking application that allows users to manage various t
 
 ## Class Diagram
 
-![Class Diagram](link_to_class_diagram_image)
+![UML Class Diagram](https://github.com/guillermoaviles/CRUD-Bank-App/assets/33820055/0ba81e7b-22d9-4292-bbd3-7a20a2e831c5)
+
 
 ## Setup
 
@@ -38,6 +39,15 @@ The project follows a RESTful API structure with the following main controllers 
 - PATCH `/api/accounts/checking/transfer/{fromId}/{destinationId}/{amount}`: Transfer funds between accounts.
 - DELETE `/api/accounts/checking/{accountNumber}`: Delete a checking account.
 
+### Investment Account Controller
+
+- GET `/api/accounts/investment`: Get all investment accounts.
+- GET `/api/accounts/investment/{accountNumber}`: Get an investment account by account number.
+- POST `/api/accounts/investment`: Create a new investment account.
+- PUT `/api/accounts/investment/{accountNumber}`: Update an investment account.
+- DELETE `/api/accounts/investment/{accountNumber}`: Delete an investment account.
+
+
 ## Future Work
 
 Some potential future enhancements for the project include:
@@ -54,7 +64,28 @@ Some potential future enhancements for the project include:
 
 ## Code Examples
 
-### Account.java
+### InvestmentAccount.java
 
-```java
-// Your Account class code here
+    private void liquidateDeposits(BigDecimal withdrawalAmount) {
+        LocalDate currentDate = LocalDate.now();
+
+        List<Deposit> depositsToDelete = new ArrayList<>();
+        for (Deposit deposit : deposits) {
+            if (currentDate.isAfter(deposit.getUnlockDate())) {
+                BigDecimal depositAmount = calculateAmountWithInterest(deposit);
+                if (withdrawalAmount.compareTo(depositAmount) >= 0) {
+                    withdrawalAmount = withdrawalAmount.subtract(depositAmount);
+                    setBalance(getBalance().subtract(depositAmount));
+                    depositsToDelete.add(deposit);
+                } else if (withdrawalAmount.compareTo(depositAmount) < 0) {
+                    deposit.setAmount(depositAmount.subtract(withdrawalAmount));
+                    setBalance(getBalance().subtract(deposit.getAmount()));
+                    withdrawalAmount = BigDecimal.valueOf(0);
+                }
+            }
+        }
+        for (Deposit deposit : depositsToDelete) {
+            deposits.remove(deposit);
+        }
+    }
+
