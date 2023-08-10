@@ -1,34 +1,27 @@
 package com.ironhack.crudbankapp.model;
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.PrimaryKeyJoinColumn;
+import java.math.BigDecimal;
 
-@PrimaryKeyJoinColumn(name="id")
+@Entity
+@PrimaryKeyJoinColumn(name = "accountNumber")
 public class CheckingAccount extends Account {
 
-
     public CheckingAccount() {
+        super();
     }
 
     public CheckingAccount(String owner) {
         super(owner);
-
     }
-
-    public void processPayment(double paymentAmount) {
-
-    }
-
-    public void processDebit(double purchaseAmount) {
-
-    }
-
     @Override
-    public double getBalance() {
+    public BigDecimal getBalance() {
         return super.getBalance();
     }
 
     @Override
-    public void setBalance(double balance) {
+    public void setBalance(BigDecimal balance) {
         super.setBalance(balance);
     }
 
