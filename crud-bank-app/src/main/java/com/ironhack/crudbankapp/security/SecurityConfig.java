@@ -29,8 +29,8 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @RequiredArgsConstructor
 public class SecurityConfig {
     // UserDetailsService is an interface provided by Spring Security that defines a way to retrieve user information
-    @Autowired
-    private UserDetailsService userDetailsService;
+//    @Autowired
+//    private UserDetailsService userDetailsService;
 
     // Autowired instance of the AuthenticationManagerBuilder
     @Autowired
@@ -41,6 +41,7 @@ public class SecurityConfig {
      *
      * @return an instance of the DelegatingPasswordEncoder
      */
+
     @Bean
     public PasswordEncoder encoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
@@ -84,6 +85,8 @@ public class SecurityConfig {
                 .requestMatchers(PATCH, "/api/accounts/checking/transfer/{fromId}/{destinationId}/{amount}").hasAnyAuthority("ROLE_USER")
                 .requestMatchers(PATCH, "/api/accounts/investment/withdraw/{accountNumber}/{amount}").hasAnyAuthority("ROLE_USER")
                 .requestMatchers(PUT, "/api/accounts/checking/{accountNumber}").hasAnyAuthority("ROLE_ADMIN")
+                .requestMatchers(GET, "/api/accounts/checking").hasAnyAuthority("ROLE_ADMIN")
+                .requestMatchers(GET, "/api/accounts/investment").hasAnyAuthority("ROLE_ADMIN")
                 .requestMatchers(POST, "/api/users").hasAnyAuthority("ROLE_ADMIN")
                 .anyRequest().authenticated());
         // add the custom authentication filter to the http security object
