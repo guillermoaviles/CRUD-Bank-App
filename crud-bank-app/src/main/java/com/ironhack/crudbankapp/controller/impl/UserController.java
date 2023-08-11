@@ -1,5 +1,6 @@
 package com.ironhack.crudbankapp.controller.impl;
 
+import com.ironhack.crudbankapp.model.CheckingAccount;
 import com.ironhack.crudbankapp.model.User;
 import com.ironhack.crudbankapp.service.interfaces.UserServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,4 +40,11 @@ public class UserController {
     public void saveUser(@RequestBody User user) {
         userService.saveUser(user);
     }
+
+    @PatchMapping("/users/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void addCheckingAccountToUser(@RequestBody CheckingAccount checkingAccount, @PathVariable Integer id) {
+        userService.addCheckingAccountToUser(checkingAccount, id);
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.ironhack.crudbankapp.service.interfaces;
 
+import com.ironhack.crudbankapp.model.CheckingAccount;
 import com.ironhack.crudbankapp.model.Role;
 import com.ironhack.crudbankapp.model.User;
 
@@ -45,4 +46,6 @@ public interface UserServiceInterface {
      * @return a List of all User entities.
      */
     List<User> getUsers();
+
+    void addCheckingAccountToUser(CheckingAccount checkingAccount, Integer id);
 }

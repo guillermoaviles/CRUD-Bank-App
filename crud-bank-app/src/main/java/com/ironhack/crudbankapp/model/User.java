@@ -49,4 +49,10 @@ public class User {
     @ManyToMany(fetch = EAGER)
     private Collection<Role> roles = new ArrayList<>();
 
+    @OneToOne
+    private CheckingAccount checkingAccount;
+    @OneToOne
+    private InvestmentAccount investmentAccount;
+
+
 }
