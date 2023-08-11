@@ -79,6 +79,11 @@ public class SecurityConfig {
         http.authorizeHttpRequests((requests) -> requests
                 .requestMatchers("/api/login/**").permitAll()
                 .requestMatchers(GET, "/api/users").hasAnyAuthority("ROLE_USER")
+                .requestMatchers(POST, "/api/accounts/checking").hasAnyAuthority("ROLE_USER")
+                .requestMatchers(POST, "/api/accounts/investment").hasAnyAuthority("ROLE_USER")
+                .requestMatchers(PATCH, "/api/accounts/checking/transfer/{fromId}/{destinationId}/{amount}").hasAnyAuthority("ROLE_USER")
+                .requestMatchers(PATCH, "/api/accounts/investment/withdraw/{accountNumber}/{amount}").hasAnyAuthority("ROLE_USER")
+                .requestMatchers(PUT, "/api/accounts/checking/{accountNumber}").hasAnyAuthority("ROLE_ADMIN")
                 .requestMatchers(POST, "/api/users").hasAnyAuthority("ROLE_ADMIN")
                 .anyRequest().authenticated());
         // add the custom authentication filter to the http security object
