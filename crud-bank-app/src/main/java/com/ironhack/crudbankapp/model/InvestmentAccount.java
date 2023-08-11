@@ -90,7 +90,7 @@ public class InvestmentAccount extends Account{
                     depositsToDelete.add(deposit);
                 } else if (withdrawalAmount.compareTo(depositAmount) < 0) {
                     deposit.setAmount(depositAmount.subtract(withdrawalAmount));
-                    setBalance(getBalance().subtract(deposit.getAmount()));
+                    setBalance(deposit.getAmount());
                     withdrawalAmount = BigDecimal.valueOf(0);
                 }
             }
